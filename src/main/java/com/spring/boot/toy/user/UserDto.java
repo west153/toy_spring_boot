@@ -1,5 +1,8 @@
 package com.spring.boot.toy.user;
 
+import org.modelmapper.ModelMapper;
+
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,11 +15,14 @@ public class UserDto {
   private String email;
   private String password;
 
-  public User toEntity() {
-    return User.builder()
-        .name(name)
-        .email(email)
-        .password(password)
-        .build();
+  @Builder
+  private UserDto(String name, String email, String password) {
+    this.name = name;
+    this.email = email;
+    this.password = password;
+  }
+
+  public User toEntity(ModelMapper modelMapper) {
+    return modelMapper.map(this, User.class);
   }
 }
